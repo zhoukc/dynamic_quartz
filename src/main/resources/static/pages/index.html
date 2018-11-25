@@ -9,7 +9,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">layui 后台布局</div>
+        <div class="layui-logo">后台管理系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <!--  <ul class="layui-nav layui-layout-left">
               <li class="layui-nav-item"><a href="">控制台</a></li>
@@ -87,6 +87,7 @@
 <script src="../layui/layui.js"></script>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="pause">暂停</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="start">启动</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -106,20 +107,67 @@
                         type: "get",
                         data: {name: data.name, group: data.group},
                         success: function (result) {
-                            layer.msg("操作成功")
+                            layer.msg("操作成功",{time:2000})
+                            //重新加载表格
+                            table.reload('idTest');
                             console.log(result)
                         }
                     })
 
                 })
 
+            } else if (obj.event === 'start') {
+                layui.use('jquery', function () {
+                    var $ = layui.jquery;
+                    $.ajax({
+                        url: "/api/resumeJob",
+                        type: "get",
+                        data: {name: data.name, group: data.group},
+                        success: function (result) {
+                            layer.msg("操作成功",{time:2000})
+                            //重新加载表格
+                            table.reload('idTest');
+                            console.log(result)
+                        }
+                    })
+                })
+
             } else if (obj.event === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
+                layer.confirm('真的删除么', function (index) {
+                    layui.use('jquery', function () {
+                        var $ = layui.jquery;
+                        $.ajax({
+                            url: "/api/deleteJob",
+                            type: "get",
+                            data: {name: data.name, group: data.group},
+                            success: function (result) {
+                                layer.msg("操作成功",{time:2000})
+                                obj.del();
+                                console.log(result)
+                            }
+                        })
+
+                    })
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
+                layui.use('layer', function(){
+                  var layer=layui.layer;
 
+                    layer.open({
+                        type:1
+                        ,offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        ,id: 'layerDemo'+type//防止重复弹出
+                        ,content: '<div style="padding: 20px 100px;">'+ data.name +'</div>'
+                        ,btn: '关闭全部'
+                        ,btnAlign: 'c' //按钮居中
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(){
+                            layer.closeAll();
+                        }
+                    });
+
+                })
                 layer.alert('编辑行：<br>' + JSON.stringify(data))
             }
         });
