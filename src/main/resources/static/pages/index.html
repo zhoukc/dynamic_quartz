@@ -72,6 +72,7 @@
                     <th lay-data="{field:'name',align:'center', width:200, fixed: true}">任务名称</th>
                     <th lay-data="{field:'group',align:'center', width:200}">任务分组</th>
                     <th lay-data="{field:'states',align:'center', width:200}">状态</th>
+                    <th lay-data="{field:'cron',align:'center', width:200}">cron表达式</th>
                     <th lay-data="{fixed: 'right', align:'center', toolbar: '#barDemo'}">操作</th>
                 </tr>
                 </thead>
@@ -107,7 +108,7 @@
                         type: "get",
                         data: {name: data.name, group: data.group},
                         success: function (result) {
-                            layer.msg("操作成功",{time:2000})
+                            layer.msg("操作成功", {time: 2000})
                             //重新加载表格
                             table.reload('idTest');
                             console.log(result)
@@ -124,7 +125,7 @@
                         type: "get",
                         data: {name: data.name, group: data.group},
                         success: function (result) {
-                            layer.msg("操作成功",{time:2000})
+                            layer.msg("操作成功", {time: 2000})
                             //重新加载表格
                             table.reload('idTest');
                             console.log(result)
@@ -141,7 +142,7 @@
                             type: "get",
                             data: {name: data.name, group: data.group},
                             success: function (result) {
-                                layer.msg("操作成功",{time:2000})
+                                layer.msg("操作成功", {time: 2000})
                                 obj.del();
                                 console.log(result)
                             }
@@ -151,27 +152,32 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
-                layui.use('layer', function(){
-                  var layer=layui.layer;
-
-                    layer.open({
-                        type:1
-                        ,offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                        ,id: 'layerDemo'+type//防止重复弹出
-                        ,content: '<div style="padding: 20px 100px;">'+ data.name +'</div>'
-                        ,btn: '关闭全部'
-                        ,btnAlign: 'c' //按钮居中
-                        ,shade: 0 //不显示遮罩
-                        ,yes: function(){
+                layui.use('layer', function () {
+                    var lay = layui.layer;
+                    lay.open({
+                        type: 1
+                        , title: '修改cron表达式'
+                        , area: ['500px', '300px']
+                        , offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        , id: 'layerDemo' //防止重复弹出
+                        , content: '<div style="padding: 20px 100px;">' + '哈哈' + '</div>'
+                        , btn: '关闭全部'
+                        , btnAlign: 'c' //按钮居中
+                        //, shade: 0 //不显示遮罩
+                        , yes: function () {
                             layer.closeAll();
                         }
                     });
+                });
 
-                })
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
             }
         });
     });
 </script>
 </body>
+
+<div id="edit_form">
+    任务名称：<input readonly  name="name">
+
+</div>
 </html>

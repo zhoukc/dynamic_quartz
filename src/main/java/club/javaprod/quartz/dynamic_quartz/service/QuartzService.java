@@ -123,6 +123,8 @@ public class QuartzService {
             jobInfo.setGroup(p.getGroup());
             TriggerKey triggerKey = TriggerKey.triggerKey(p.getName(), p.getGroup());
             try {
+                CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+                jobInfo.setCron(cronTrigger.getCronExpression());
                 Trigger.TriggerState triggerState = scheduler.getTriggerState(triggerKey);
                 jobInfo.setStates(triggerState.toString());
             } catch (SchedulerException e) {
@@ -139,6 +141,15 @@ public class QuartzService {
         private String name;
         private String group;
         private String states;
+        private String cron;
+
+        public String getCron() {
+            return cron;
+        }
+
+        public void setCron(String cron) {
+            this.cron = cron;
+        }
 
         public String getName() {
             return name;
